@@ -11,6 +11,7 @@
 #include <time.h>
 #include <signal.h>
 #include "fbabgr8888.h"
+#include "sipeed_logo.h"
 
 int main(void) {
   int fbfd = -1;
@@ -188,5 +189,15 @@ int main(void) {
 		      ABGR8888_WHITE | ABGR8888_ALPHA,
 		      " BLACK ");
 
+  int i;
+  uint32_t *src, *dst;
+  src = (uint32_t *)&logo_256x33_abgr8888[0];
+  dst = (uint32_t *)fb.mem;
+  while (i < 8448) {
+    memcpy(dst, src, 256);
+    src += 256;
+    dst += (fb.fix_info.line_length / sizeof(uint32_t));
+    i += 256;
+  }
   exit(EXIT_SUCCESS);
 }
